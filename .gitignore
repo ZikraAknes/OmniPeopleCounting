@@ -1,0 +1,9 @@
+# Ignore virtual environment folders
+
+
+# Ignore Python cache folders
+__pycache__/
+inputs
+outputs/*.jpg
+
+# Ignore Learning folder
