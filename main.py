@@ -8,8 +8,8 @@ from tools.crop_image import CropImage
 from tools.dewarp import DewarpImage
 
 # YOLO Model
-model = YOLO('models/best5.pt')
-model.to('cuda')
+model = YOLO('models/best8.pt')
+# model.to('cuda')
 
 # Font Variables
 font = cv2.FONT_HERSHEY_DUPLEX
@@ -17,7 +17,7 @@ font_thickness = 1
 font_size = 0.5
 
 # Center point
-center = [1050, 660]
+center = [358, 295]
 
 # Detcted Persons Id
 detected_persons = {}
@@ -101,8 +101,8 @@ def count_people(frame):
     return pred_img     
 
 # Retrieve video
-# cap = cv2.VideoCapture(1)
-cap = cv2.VideoCapture("C:/Users/zikra/OneDrive/Pictures/Camera Roll/WIN_20241115_10_51_34_Pro.mp4")
+cap = cv2.VideoCapture(1)
+# cap = cv2.VideoCapture("C:/Users/zikra/OneDrive/Pictures/Camera Roll/WIN_20241115_10_51_34_Pro.mp4")
 
 # Get camera area
 # cam_area = CropImage.get_cam_area(cap.read()[1])

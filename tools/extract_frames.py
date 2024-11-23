@@ -1,18 +1,18 @@
 import cv2
 import os
 
-cap = cv2.VideoCapture("C:/Users/zikra/OneDrive/Pictures/Camera Roll/WIN_20241115_10_51_34_Pro.mp4")
+cap = cv2.VideoCapture("C:/Users/zikra/OneDrive/Documents/Kuliah/Semester 7/Project Skripsi/OmniPeopleCounting/inputs/OMNI_4.mp4")
 
 i = 0
-j = 171
+j = 281
 
 fps = 15
-start_sec = 11221
+start_sec = 0
 
 while cap.isOpened():
     ret, frame = cap.read()
 
-    center_point = [1048, 659]
+    center_point = [303, 267]
 
     closest = min([center_point[0], center_point[1], frame.shape[1]-center_point[0], frame.shape[0]-center_point[1]])
 
@@ -20,15 +20,13 @@ while cap.isOpened():
 
     print(fps*start_sec, i)
 
-    if not ret or j > 370:
+    if not ret:
         break
 
     if i>=start_sec and i%10 == 0:
-        while(os.path.isfile('extracted_frames/images/omni_video_' + str(j) + '.jpg')):
-            j+=1    
-        if j>280:
-            break
-        filename = 'extracted_frames/images/omni_video_' + str(j) + '.jpg'
+        while(os.path.isfile('D:/Omni Dataset/full_dataset/images/omni_video_' + str(j) + '.jpg')):
+            j+=1
+        filename = 'D:/Omni Dataset/full_dataset/images/omni_video_' + str(j) + '.jpg'
         cv2.imwrite(filename, frame)
         j+=1
 

@@ -44,7 +44,7 @@ if __name__=="__main__":
 
 	# reading the image 
 	# img = cv2.imread('outputs/2024-11-15.jpg', 1) 
-	cap = cv2.VideoCapture("C:/Users/zikra/OneDrive/Pictures/Camera Roll/WIN_20241115_10_51_34_Pro.mp4")
+	cap = cv2.VideoCapture("C:/Users/zikra/OneDrive/Documents/Kuliah/Semester 7/Project Skripsi/OmniPeopleCounting/inputs/OMNI_4.mp4")
 
 	img = cap.read()[1]
 
