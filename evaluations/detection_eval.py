@@ -5,13 +5,15 @@ from tqdm import tqdm
 from ultralytics import YOLO
 
 # YOLO Model
-model = YOLO('models/best4.pt')
+model = YOLO('models/best8.pt')
 model.to('cuda')
 
 iou_threshold = 0.6
 
-image_path = os.path.join(os.path.dirname(__file__), 'dataset', 'images')
-label_path = os.path.join(os.path.dirname(__file__), 'dataset', 'labels')
+dataset_path = 'D:/Omni Dataset'
+
+image_path = os.path.join(dataset_path, 'test', 'images')
+label_path = os.path.join(dataset_path, 'test', 'labels')
 
 TP = 0
 FP = 0
@@ -35,7 +37,9 @@ def extract_bboxes(img):
      
     return boxes
 
-def label_img(img, bbox, color):
+def label_img(image, bbox, color):
+    img = np.copy(image)
+
     bbox_x1, bbox_y1, bbox_x2, bbox_y2 = bbox
 
     # text = 'Person - ' + bbox_id
@@ -121,13 +125,11 @@ for file in tqdm(os.listdir(image_path)):
         current_FP += 1 
 
     # if current_FP != 0:
-    #     print('TP =', current_TP)
-    #     print('FP =', current_FP)
-    #     print('TN =', current_TN)
-    #     print('FN =', current_FN)
+    #     printFN =', current_FN)
 
-    #     cv2.imshow('image', image)
-    #     cv2.waitKey(0)
+
+    cv2.imshow('image', image)
+    cv2.waitKey(0)
 
 print('\nTP =', TP)
 print('FP =', FP)
