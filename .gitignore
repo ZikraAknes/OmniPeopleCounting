@@ -6,5 +6,6 @@ __pycache__/
 inputs
 outputs/*.jpg
 test.py
+*.json
 
 # Ignore Learning folder
