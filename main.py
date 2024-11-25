@@ -1,15 +1,23 @@
 import cv2
 import numpy as np
 import time
-from datetime import datetime
+import firebase_admin
 
+from datetime import datetime
 from ultralytics import YOLO
 from tools.crop_image import CropImage
 from tools.dewarp import DewarpImage
+from firebase_admin import db
+
+databaseURL = "https://omni-people-default-rtdb.asia-southeast1.firebasedatabase.app"
+cred_obj = firebase_admin.credentials.Certificate("omni-people-firebase-adminsdk-mj65k-77786d42ec.json")
+default_app = firebase_admin.initialize_app(cred_obj, {'databaseURL':databaseURL})
+
+ref = db.reference("User123")
 
 # YOLO Model
 model = YOLO('models/best8.pt')
-# model.to('cuda')
+model.to('cuda')
 
 # Font Variables
 font = cv2.FONT_HERSHEY_DUPLEX
@@ -17,7 +25,7 @@ font_thickness = 1
 font_size = 0.5
 
 # Center point
-center = [358, 295]
+center = [488, 428]
 
 # Detcted Persons Id
 detected_persons = {}
@@ -40,6 +48,8 @@ def extract_bboxes(img):
 
             box = [[int(data) for data in bbox[:4]], str(int(bbox[4])), bbox[5]]
             boxes.append(box)
+
+    ref.child('People Count').set(len(boxes))
      
     return boxes
 
@@ -47,7 +57,7 @@ def extract_bboxes(img):
 def label_img(img, bbox):
     (bbox_x1, bbox_y1, bbox_x2, bbox_y2), bbox_id, bbox_conf = bbox
 
-    text = 'Person - ' + bbox_id
+    text = 'Person - ' + str(detected_persons[bbox_id][4])
 
     (w, h), _ = cv2.getTextSize(text, font, font_size, font_thickness)
 
@@ -85,7 +95,7 @@ def count_people(frame):
         center_y = bbox_y1 + (bbox_y2 - bbox_y1)/2
 
         if detected_persons.get(bbox_id) == None:
-            detected_persons[bbox_id] = [center_x, center_y, False, time.time()]
+            detected_persons[bbox_id] = [center_x, center_y, False, time.time(), len(detected_persons)+1]
         else:
             movement_dist = distance(center_x, center_y, detected_persons[bbox_id][0], detected_persons[bbox_id][1])
             dist_treshold = 20
@@ -94,15 +104,15 @@ def count_people(frame):
                 draw_marker(detected_persons[bbox_id][0], detected_persons[bbox_id][1])
                 detected_persons[bbox_id][2] = True
             elif movement_dist > dist_treshold:
-                detected_persons[bbox_id] = [center_x, center_y, False, time.time()]
+                detected_persons[bbox_id] = [center_x, center_y, False, time.time(), detected_persons[bbox_id][4]]
 
         pred_img = label_img(pred_img, bbox)
 
     return pred_img     
 
 # Retrieve video
-cap = cv2.VideoCapture(1)
-# cap = cv2.VideoCapture("C:/Users/zikra/OneDrive/Pictures/Camera Roll/WIN_20241115_10_51_34_Pro.mp4")
+# cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture("inputs/Omni3.mp4")
 
 # Get camera area
 # cam_area = CropImage.get_cam_area(cap.read()[1])
