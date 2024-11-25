@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import time
 import firebase_admin
+import threading
 
 from datetime import datetime
 from ultralytics import YOLO
@@ -10,10 +11,12 @@ from tools.dewarp import DewarpImage
 from firebase_admin import db
 
 databaseURL = "https://omni-people-default-rtdb.asia-southeast1.firebasedatabase.app"
-cred_obj = firebase_admin.credentials.Certificate("omni-people-firebase-adminsdk-mj65k-77786d42ec.json")
+cred_obj = firebase_admin.credentials.Certificate("omni-people-firebase-adminsdk-mj65k-6898755a38.json")
 default_app = firebase_admin.initialize_app(cred_obj, {'databaseURL':databaseURL})
 
 ref = db.reference("User123")
+
+uploading = False
 
 # YOLO Model
 model = YOLO('models/best8.pt')
@@ -48,8 +51,9 @@ def extract_bboxes(img):
 
             box = [[int(data) for data in bbox[:4]], str(int(bbox[4])), bbox[5]]
             boxes.append(box)
-
-    ref.child('People Count').set(len(boxes))
+    
+    if(not uploading):
+        threading.Thread(target=upload_database, daemon=True, args=[len(boxes)]).start()
      
     return boxes
 
@@ -109,6 +113,11 @@ def count_people(frame):
         pred_img = label_img(pred_img, bbox)
 
     return pred_img     
+
+def upload_database(people_count):
+    uploading = True
+    ref.child('People Count').set(people_count)
+    uploading = False
 
 # Retrieve video
 # cap = cv2.VideoCapture(1)
