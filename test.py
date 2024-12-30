@@ -1,62 +1,20 @@
-# importing the module 
-import cv2 
+import numpy as np  
+import matplotlib.pyplot as plt  
 
-# function to display the coordinates of 
-# of the points clicked on the image 
-def click_event(event, x, y, flags, params): 
+fig = plt.subplots(figsize = (12, 8))
+  
+X = ['AP','Precision','Recall','F1 Score', 'MSE'] 
+Ygirls = [0.819, 0.994, 0.976, 0.985, 0.255] 
+Zboys = [0.523, 0.954, 0.982, 0.968, 0.441] 
+  
+X_axis = np.arange(len(X)) 
+  
+plt.bar(X_axis - 0.2, Ygirls, 0.38, edgecolor ='white', label = 'YOLO11s') 
+plt.bar(X_axis + 0.2, Zboys, 0.38, edgecolor ='white', label = 'SSD MobileNetV2') 
 
-	# checking for left mouse clicks 
-	if event == cv2.EVENT_LBUTTONDOWN: 
-
-		# displaying the coordinates 
-		# on the Shell 
-		print(x, ' ', y) 
-
-		# displaying the coordinates 
-		# on the image window 
-		font = cv2.FONT_HERSHEY_SIMPLEX 
-		cv2.putText(img, str(x) + ',' +
-					str(y), (x,y), font, 
-					1, (255, 0, 0), 2) 
-		cv2.imshow('image', img) 
-
-	# checking for right mouse clicks	 
-	if event==cv2.EVENT_RBUTTONDOWN: 
-
-		# displaying the coordinates 
-		# on the Shell 
-		print(x, ' ', y) 
-
-		# displaying the coordinates 
-		# on the image window 
-		font = cv2.FONT_HERSHEY_SIMPLEX 
-		b = img[y, x, 0] 
-		g = img[y, x, 1] 
-		r = img[y, x, 2] 
-		cv2.putText(img, str(b) + ',' +
-					str(g) + ',' + str(r), 
-					(x,y), font, 1, 
-					(255, 255, 0), 2) 
-		cv2.imshow('image', img) 
-
-# driver function 
-if __name__=="__main__": 
-
-	# reading the image 
-	# img = cv2.imread('outputs/2024-11-15.jpg', 1) 
-	cap = cv2.VideoCapture("C:/Users/zikra/OneDrive/Documents/Kuliah/Semester 7/Project Skripsi/OmniPeopleCounting/inputs/OMNI_4.mp4")
-
-	img = cap.read()[1]
-
-	# displaying the image 
-	cv2.imshow('image', img) 
-
-	# setting mouse handler for the image 
-	# and calling the click_event() function 
-	cv2.setMouseCallback('image', click_event) 
-
-	# wait for a key to be pressed to exit 
-	cv2.waitKey(0) 
-
-	# close the window 
-	cv2.destroyAllWindows() 
+plt.xticks(X_axis, X) 
+plt.xlabel("Performance Metrics") 
+plt.ylabel("Value") 
+plt.title("Training Evaluations") 
+plt.legend() 
+plt.show() 

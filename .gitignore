@@ -7,5 +7,6 @@ inputs
 outputs/*.jpg
 test.py
 *.json
+evaluations/reports
 
 # Ignore Learning folder

@@ -43,8 +43,9 @@ def click_event(event, x, y, flags, params):
 if __name__=="__main__": 
 
 	# reading the image 
-	# img = cv2.imread('outputs/2024-11-15.jpg', 1) 
-	cap = cv2.VideoCapture("C:/Users/zikra/OneDrive/Documents/Kuliah/Semester 7/Project Skripsi/OmniPeopleCounting/inputs/Omni2.mp4")
+	# img = cv2.imread('D:/Omni Dataset/full_dataset/images/omni_video_616.jpg') 
+	cap = cv2.VideoCapture("D:/Omni Dataset/video/Scene1A_14.mp4")
+	# cap = cv2.VideoCapture(1)
 
 	img = cap.read()[1]
 
