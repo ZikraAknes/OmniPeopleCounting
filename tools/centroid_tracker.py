@@ -76,3 +76,6 @@ class CentroidTracker():
             del self.tracked_obj['missing_frame_count'][idx]
 
         return {'tracked_bbox': tracked_bboxes, 'tracked_id': matched_ids}
+    
+    def reset_tracker(self):
+        self.tracked_obj.clear()
