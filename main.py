@@ -36,13 +36,13 @@ font_thickness = 1
 font_size = 0.5
 
 # Time range
-start = '01:00'
-stop = '02:00'
+start = '00:00'
+stop = '23:59'
 start_min = (int(start.split(':')[0]) * 60) + (int(start.split(':')[1]))
 stop_min = (int(stop.split(':')[0]) * 60) + (int(stop.split(':')[1]))
 
 # Center point
-center = [360, 360]
+center = [354, 293]
 
 # Detcted Persons Id
 detected_persons = {}
